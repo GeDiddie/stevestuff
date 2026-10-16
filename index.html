@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bounty Hunter | SteveStuff</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 2rem auto; padding: 1rem; background: #0f172a; color: #e2e8f0; }
+    h1 { color: #38bdf8; }
+    .gauges { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .gauge { background: #1e293b; padding: 1.5rem; border-radius: 12px; min-width: 200px; text-align: center; }
+    .gauge h2 { margin: 0 0 0.5rem; }
+    .value { font-size: 2.5rem; font-weight: bold; color: #22d3ee; }
+    .updated { font-size: 0.85rem; color: #94a3b8; margin-top: 0.5rem; }
+    .specs { margin-top: 2rem; background: #1e293b; padding: 1rem; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Bounty Hunter</h1>
+  <p>Official digital maintenance log for the 2016 42′ Viking Convertible Sport Tower<br>(twin Cummins QSC 600s with Zeus pod drives, Seakeeper, full Garmin network)<br>Captain-maintained since delivery. Georgetown, Cayman Islands.</p>
+
+  <div class="gauges">
+    <div class="gauge">
+      <h2>Fuel</h2>
+      <div class="value" id="fuel">--</div>
+      <div>gal / 525</div>
+      <div class="updated" id="fuel-updated">Loading...</div>
+    </div>
+    <div class="gauge">
+      <h2>Water</h2>
+      <div class="value" id="water">--</div>
+      <div>gal / 120</div>
+      <div class="updated" id="water-updated">Loading...</div>
+    </div>
+  </div>
+
+  <div class="specs">
+    <strong>Specs:</strong> LOA 42′7″ · Beam 15′10″ · 525 gal fuel
+  </div>
+
+  <script>
+    async function loadData() {
+      try {
+        const res = await fetch('https://raw.githubusercontent.com/GeDiddie/stevestuff/main/data.json?t=' + Date.now());
+        const data = await res.json();
+        document.getElementById('fuel').textContent = data.fuel ?? '--';
+        document.getElementById('water').textContent = data.water ?? '--';
+        const t = data.updated ? new Date(data.updated).toLocaleString() : 'never';
+        document.getElementById('fuel-updated').textContent = 'Updated: ' + t;
+        document.getElementById('water-updated').textContent = 'Updated: ' + t;
+      } catch (e) {
+        document.getElementById('fuel-updated').textContent = 'Failed to load';
+        document.getElementById('water-updated').textContent = 'Failed to load';
+      }
+    }
+    loadData();
+    setInterval(loadData, 60000); // refresh every minute
+  </script>
+</body>
+</html>
