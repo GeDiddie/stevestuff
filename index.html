@@ -115,11 +115,25 @@
       try {
         const res = await fetch('https://raw.githubusercontent.com/GeDiddie/stevestuff/main/data.json?t=' + Date.now());
         const data = await res.json();
-        document.getElementById('fuel').textContent = data.fuel ?? '--';
-        document.getElementById('water').textContent = data.water ?? '--';
-        const t = data.updated ? new Date(data.updated).toLocaleString() : 'never';
-        document.getElementById('fuel-updated').textContent = 'Updated: ' + t;
-        document.getElementById('water-updated').textContent = 'Updated: ' + t;
+        const ago = (iso) => {
+          if (!iso) return 'never';
+          const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000));
+          if (m < 1) return 'just now';
+          if (m < 60) return m + ' min ago';
+          const h = Math.floor(m / 60);
+          if (h < 24) return h + ' hr ' + (m % 60) + ' min ago';
+          return Math.floor(h / 24) + ' d ' + (h % 24) + ' hr ago';
+        };
+        const show = (k) => {
+          const iso = data[k + '_updated'] || data.updated;
+          document.getElementById(k).textContent = data[k] ?? '--';
+          const stale = iso && (Date.now() - new Date(iso)) > 15 * 60000;
+          const el = document.getElementById(k + '-updated');
+          el.textContent = 'Last updated ' + ago(iso);
+          el.style.color = stale ? '#fbbf24' : '';
+        };
+        show('fuel');
+        show('water');
       } catch (e) {
         document.getElementById('fuel-updated').textContent = 'Failed to load';
         document.getElementById('water-updated').textContent = 'Failed to load';
