@@ -1,12 +1,12 @@
 {
-    "fuel":  362,
-    "fuel_pct":  69,
+    "fuel":  391,
+    "fuel_pct":  74.4,
     "fuel_cap":  525,
-    "fuel_updated":  "2026-11-05T14:34:36Z",
+    "fuel_updated":  "2026-11-05T14:39:36Z",
     "water":  120,
     "water_pct":  100,
     "water_cap":  120,
-    "water_updated":  "2026-11-05T14:34:36Z",
-    "updated":  "2026-11-05T14:34:36Z",
+    "water_updated":  "2026-11-05T14:39:36Z",
+    "updated":  "2026-11-05T14:39:36Z",
     "note":  "Fuel from engine system. Water sensor still being sorted."
 }
